@@ -63,6 +63,7 @@ document.getElementById('difficulty').addEventListener('change', function() {
     timeSetting = veryHardTime; // Set time limit for very hard mode
     spawnIntervalTime = veryHardInterval; // Set spawn interval for very hard mode
   }
+  console.log(`Difficulty set to ${this.value}. Time: ${timeSetting}s, Spawn Interval: ${spawnIntervalTime}ms`); // Log the selected difficulty and settings
 });
 
 
