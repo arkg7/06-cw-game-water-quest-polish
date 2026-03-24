@@ -4,9 +4,11 @@ let currentCans = 0;         // Current number of items collected
 let gameActive = false;      // Tracks if game is currently running
 let spawnInterval;          // Holds the interval for spawning items
 let easyTime = 30;         // Time limit for the game in seconds
-let hardtime = 20;         // Time limit for hard mode
+let hardTime = 20;         // Time limit for hard mode
+let veryHardTime = 10;
 let easyInvterval = 1000;      // Spawn interval for easy mode in milliseconds
 let hardInterval = 700;      // Spawn interval for hard mode in milliseconds
+let veryHardInterval = 200;
 let timeSetting = easyTime; // Default time setting
 let spawnIntervalTime = easyInvterval; // Default spawn interval
 let timer = document.getElementById('timer'); // Reference to the timer display element
@@ -57,6 +59,9 @@ document.getElementById('difficulty').addEventListener('change', function() {
   } else if (this.value === 'hard') {
     timeSetting = hardtime; // Set time limit for hard mode
     spawnIntervalTime = hardInterval; // Set spawn interval for hard mode
+  } else if (this.value === 'very-hard') {
+    timeSetting = veryHardTime; // Set time limit for very hard mode
+    spawnIntervalTime = veryHardInterval; // Set spawn interval for very hard mode
   }
 });
 
