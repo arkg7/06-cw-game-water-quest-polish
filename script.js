@@ -6,11 +6,11 @@ let spawnInterval;          // Holds the interval for spawning items
 let easyTime = 30;         // Time limit for the game in seconds
 let hardTime = 20;         // Time limit for hard mode
 let veryHardTime = 10;
-let easyInvterval = 1000;      // Spawn interval for easy mode in milliseconds
+let easyInterval = 1000;      // Spawn interval for easy mode in milliseconds
 let hardInterval = 700;      // Spawn interval for hard mode in milliseconds
 let veryHardInterval = 200;
 let timeSetting = easyTime; // Default time setting
-let spawnIntervalTime = easyInvterval; // Default spawn interval
+let spawnIntervalTime = easyInterval; // Default spawn interval
 let timer = document.getElementById('timer'); // Reference to the timer display element
 let score = document.getElementById('current-cans'); // Reference to the score display element
 let instructions = document.querySelector('.game-instructions'); // Reference to the instructions element
