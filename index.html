@@ -11,6 +11,13 @@
   <div class="container">
     <h1>Water Quest</h1>
     <p class="game-instructions">Collect 20 water cans to complete the game!</p>
+    <form>
+		<label for="difficulty">Choose a difficulty:</label>
+		  <select id="difficulty" name="difficulty">
+			  <option value="easy">Easy</option>
+			  <option value="hard">Hard</option>
+		  </select>
+	  </form>
     <div class="stats">  
       <p>Cans Collected: <span id="current-cans">0</span></p>
       <p>Time Left: <span id="timer">30</span>s</p>
@@ -25,6 +32,12 @@
   <div class="game-over-popup-container"> <div class="game-over-popup">
     <h2 id="popup-text">Game Over!</h2>
     <p id="final-score"></p>
+    <br>
+    <p> Check out Charity: Water's site and see how you can help!</p>
+    <a href="https://www.charitywater.org/" target="_blank" class="charity-link">Visit Charity: Water</a>
+    <br>
+    <br>
+    <a href="https://www.charitywater.org/donate" target="_blank" class="charity-link">Donate Now</a>
     <button id="game-over-button">Close</button>
   </div>
   <script src="script.js"></script>

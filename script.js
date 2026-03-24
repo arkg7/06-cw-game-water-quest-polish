@@ -3,6 +3,12 @@ const GOAL_CANS = 20;        // Total items needed to collect
 let currentCans = 0;         // Current number of items collected
 let gameActive = false;      // Tracks if game is currently running
 let spawnInterval;          // Holds the interval for spawning items
+let easyTime = 30;         // Time limit for the game in seconds
+let hardtime = 20;         // Time limit for hard mode
+let easyInvterval = 1000;      // Spawn interval for easy mode in milliseconds
+let hardInterval = 700;      // Spawn interval for hard mode in milliseconds
+let timeSetting = easyTime; // Default time setting
+let spawnIntervalTime = easyInvterval; // Default spawn interval
 let timer = document.getElementById('timer'); // Reference to the timer display element
 let score = document.getElementById('current-cans'); // Reference to the score display element
 let instructions = document.querySelector('.game-instructions'); // Reference to the instructions element
@@ -43,6 +49,17 @@ createGrid();
     }
   });
 
+// Set up change handler for difficulty selection
+document.getElementById('difficulty').addEventListener('change', function() {
+  if (this.value === 'easy') {
+    timeSetting = easyTime; // Set time limit for easy mode
+    spawnIntervalTime = easyInvterval; // Set spawn interval for easy mode
+  } else if (this.value === 'hard') {
+    timeSetting = hardtime; // Set time limit for hard mode
+    spawnIntervalTime = hardInterval; // Set spawn interval for hard mode
+  }
+});
+
 
 // Spawns a new item in a random grid cell
 function spawnWaterCan() {
@@ -69,16 +86,17 @@ function startGame() {
   gameActive = true;
   backgroundFill.style.height = '0%'; // Reset the background fill to empty
   let startGameButton = document.getElementById('start-game');
+  document.getElementById('difficulty').disabled = true; // Disable difficulty selection during the game
   timeBar.style.animation = 'none'; // Ensure the timer bar animation is running
   timeBar.offsetHeight; // Trigger reflow to restart the animation
   startGameButton.textContent = 'Game In Progress!'; // Reset the start button text
   startGameButton.style.backgroundColor = '#cf2222'; // Change button color to indicate game is active
-  timer.textContent = '30'; // Reset the timer display to 30 seconds
+  timer.textContent = timeSetting; // Reset the timer display to the current time setting
   score.textContent = '0'; // Reset the score display to 0
-  timeBar.style.animation = 'timerBar 30s linear forwards'; // Start the timer bar animation
+  timeBar.style.animation = `timerBar ${timeSetting}s linear forwards`; // Start the timer bar animation
   currentCans = 0; // Reset the count of collected items
   createGrid(); // Set up the game grid
-  spawnInterval = setInterval(spawnWaterCan, 1000); // Spawn water cans every second
+  spawnInterval = setInterval(spawnWaterCan, spawnIntervalTime); // Spawn water cans based on difficulty
   timeInterval = setInterval(() => {
     // Update the timer display
     if (gameActive) {
@@ -86,13 +104,13 @@ function startGame() {
     }
   }, 1000); // Placeholder for any time-based updates (e.g., timer display)
 
-  // Timer to end the game after 30 seconds
+  // Timer to end the game after the time setting expires
   gameTimeout = setTimeout(() => {
     if (gameActive) {
       endGame(); // End the game when time runs out
     }
     grid.innerHTML = ''; // Clear the grid after the game ends
-  }, 30900);
+  }, timeSetting*1000+900);
   
 }
 
@@ -102,6 +120,7 @@ function endGame() {
   clearInterval(spawnInterval); // Stop spawning water cans
   clearInterval(timeInterval); // Stop the timer interval
   clearTimeout(gameTimeout); // Stop the game timeout
+  document.getElementById('difficulty').disabled = false; // Enable difficulty selection after the game ends
   let startGameButton = document.getElementById('start-game');
   startGameButton.textContent = 'Restart Game'; // Reset the start button text
   startGameButton.style.backgroundColor = '#4CAF50'; // Change button color back to default
