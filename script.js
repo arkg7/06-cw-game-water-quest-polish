@@ -55,9 +55,9 @@ createGrid();
 document.getElementById('difficulty').addEventListener('change', function() {
   if (this.value === 'easy') {
     timeSetting = easyTime; // Set time limit for easy mode
-    spawnIntervalTime = easyInvterval; // Set spawn interval for easy mode
+    spawnIntervalTime = easyInterval; // Set spawn interval for easy mode
   } else if (this.value === 'hard') {
-    timeSetting = hardtime; // Set time limit for hard mode
+    timeSetting = hardTime; // Set time limit for hard mode
     spawnIntervalTime = hardInterval; // Set spawn interval for hard mode
   } else if (this.value === 'very-hard') {
     timeSetting = veryHardTime; // Set time limit for very hard mode
