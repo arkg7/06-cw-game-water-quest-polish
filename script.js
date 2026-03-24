@@ -6,6 +6,10 @@ let spawnInterval;          // Holds the interval for spawning items
 let timer = document.getElementById('timer'); // Reference to the timer display element
 let score = document.getElementById('current-cans'); // Reference to the score display element
 let instructions = document.querySelector('.game-instructions'); // Reference to the instructions element
+let popupContainer = document.querySelector('.game-over-popup-container'); // Reference to the game over popup container
+let popup = document.querySelector('.game-over-popup'); // Reference to the game over popup element
+let timeBar = document.querySelector('.timer-bar'); // Reference to the timer bar element
+let backgroundFill = document.querySelector('.background-fill'); // Reference to the background fill element
 
 // Creates the 3x3 game grid where items will appear
 function createGrid() {
@@ -27,11 +31,14 @@ createGrid();
     if (event.target.classList.contains('water-can')) {
       const cells = document.querySelectorAll('.grid-cell');
       currentCans++; // Increment the count of collected items
+      backgroundFill.style.height = `${(currentCans - 1) / GOAL_CANS * 80}%`; // Update the background fill based on progress
+      backgroundFill.style.animation = 'none'; // Reset animation to allow it to restart
+      backgroundFill.offsetHeight; // Trigger reflow to restart the animation
+      backgroundFill.style.animation = 'slideUp 0.5s ease-in-out forwards'; // Add slide-up animation when collecting an item
       score.textContent = currentCans; // Update the score display
       cells.forEach(cell => (cell.innerHTML = '')); // Clear the grid to remove the collected item
       if (currentCans >= GOAL_CANS) {
         endGame(); // End the game if the goal is reached
-        alert(`Congratulations! You collected ${currentCans} water cans!`);
       }
     }
   });
@@ -60,11 +67,15 @@ function spawnWaterCan() {
 function startGame() {
   if (gameActive) return; // Prevent starting a new game if one is already active
   gameActive = true;
+  backgroundFill.style.height = '0%'; // Reset the background fill to empty
   let startGameButton = document.getElementById('start-game');
+  timeBar.style.animation = 'none'; // Ensure the timer bar animation is running
+  timeBar.offsetHeight; // Trigger reflow to restart the animation
   startGameButton.textContent = 'Game In Progress!'; // Reset the start button text
   startGameButton.style.backgroundColor = '#cf2222'; // Change button color to indicate game is active
   timer.textContent = '30'; // Reset the timer display to 30 seconds
   score.textContent = '0'; // Reset the score display to 0
+  timeBar.style.animation = 'timerBar 30s linear forwards'; // Start the timer bar animation
   currentCans = 0; // Reset the count of collected items
   createGrid(); // Set up the game grid
   spawnInterval = setInterval(spawnWaterCan, 1000); // Spawn water cans every second
@@ -78,22 +89,35 @@ function startGame() {
   // Timer to end the game after 30 seconds
   gameTimeout = setTimeout(() => {
     if (gameActive) {
-      endGame();
-      alert(`Time's up! You collected ${currentCans} water cans. Try again!`);
+      endGame(); // End the game when time runs out
     }
     grid.innerHTML = ''; // Clear the grid after the game ends
-  }, 31000);
+  }, 30900);
   
 }
 
 function endGame() {
   gameActive = false; // Mark the game as inactive
+  timeBar.style.animationPlayState = 'paused'; // Pause the timer bar animation
   clearInterval(spawnInterval); // Stop spawning water cans
   clearInterval(timeInterval); // Stop the timer interval
   clearTimeout(gameTimeout); // Stop the game timeout
   let startGameButton = document.getElementById('start-game');
   startGameButton.textContent = 'Restart Game'; // Reset the start button text
   startGameButton.style.backgroundColor = '#4CAF50'; // Change button color back to default
+  popupContainer.style.display = 'flex'; // Show the game over popup
+  popup.style.animation = 'slideDown 0.5s'; // Add slide-down animation to the popup
+  if (currentCans >= GOAL_CANS) {
+    document.getElementById('popup-text').textContent = `You Win!`; // Update popup title for winning
+    document.getElementById('final-score').textContent = `You collected all ${currentCans} water cans! Congratulations!`; // Update popup title for winning
+  } else {
+    document.getElementById('popup-text').textContent = `Game Over!`;
+    document.getElementById('final-score').textContent = `You collected ${currentCans} out of ${GOAL_CANS} water cans! Better luck next time!`; // Display the final score in the popup
+  }
+  
+  document.getElementById('game-over-button').addEventListener('click', () => {
+    popupContainer.style.display = 'none'; // Hide the popup when "Close" is clicked
+  });
 }
 
 // Set up click handler for the start button

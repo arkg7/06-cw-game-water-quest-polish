@@ -7,16 +7,25 @@
   <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
+  <div class="background-fill"></div>
   <div class="container">
     <h1>Water Quest</h1>
     <p class="game-instructions">Collect 20 water cans to complete the game!</p>
-    <div class="stats">
+    <div class="stats">  
       <p>Cans Collected: <span id="current-cans">0</span></p>
       <p>Time Left: <span id="timer">30</span>s</p>
+    </div>
+    <div class="timer-bar-container">
+      <div class="timer-bar"></div>
     </div>
     <div id="achievements" class="achievement"></div>
     <div class="game-grid"></div>
     <button id="start-game">Start Game</button>
+  </div>
+  <div class="game-over-popup-container"> <div class="game-over-popup">
+    <h2 id="popup-text">Game Over!</h2>
+    <p id="final-score"></p>
+    <button id="game-over-button">Close</button>
   </div>
   <script src="script.js"></script>
 </body>
